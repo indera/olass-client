@@ -82,6 +82,10 @@ class OlassClient():
         self.session = OlassClient.get_db_session(self.engine, create_tables)
         # self.config.from_object(some_module.DefaultConfig)
 
+        # communicate over insecure channel
+        if self.config.get('OAUTHLIB_INSECURE_TRANSPORT', False):
+            os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
     def update_config(self, interactive, rows_per_batch=1):
         """
         Write the command line options to the config object for easy access.
@@ -181,7 +185,7 @@ class OlassClient():
                 token_url=self.config.get('TOKEN_URL'),
                 client_id=client_id,
                 client_secret=client_secret,
-                verify=self.config.get('VERIFY_SSL_CERT', False))
+                verify=self.config.get('VERIFY_SSL_CERT', True))
 
             if token.get('expires_in') == 0:
                 if attempt < TOKEN_REQUEST_ATTEMPTS:

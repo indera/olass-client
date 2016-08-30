@@ -7,8 +7,12 @@ Notes:
 -   The *SALT* value will be provided over the phone.
 """
 
-# Set to False if the a target server has a self-signed certificate
-VERIFY_SSL_CERT = False
+# Set to `False` if the target server has a self-signed certificate
+VERIFY_SSL_CERT = True
+
+# Set to `True` if the server is not listening to the port 443
+# @see https://github.com/requests/requests-oauthlib/blob/master/requests_oauthlib/oauth2_session.py#L183  # NOQA
+OAUTHLIB_INSECURE_TRANSPORT = False
 
 CLIENT_ID = 'client_1'
 CLIENT_SECRET = 'secret_1'
