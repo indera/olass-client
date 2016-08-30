@@ -2,7 +2,7 @@
 CREATE DATABASE olassc;
 
 -- Create the user and grant privileges
-CREATE USER 'olassc'@'localhost' IDENTIFIED BY 'insecurepassword';
+CREATE USER 'olassc'@'%' IDENTIFIED BY 'insecurepassword';
 
 FLUSH PRIVILEGES;
 
@@ -11,4 +11,4 @@ GRANT
 ON
     olassc.*
 TO
-    'olassc'@'localhost';
+    'olassc'@'%';

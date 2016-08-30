@@ -1,7 +1,7 @@
 
 -- Store database modification log
 CREATE TABLE version (
-     version_id varchar(255) NOT NULL DEFAULT '',
+    version_id varchar(255) NOT NULL DEFAULT '',
     version_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     version_info text NOT NULL,
   PRIMARY KEY (version_id)
@@ -19,22 +19,6 @@ CREATE TABLE gender (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ;
 
-CREATE TABLE race (
-    race char(2) NOT NULL,
-    race_name varchar(255) NOT NULL,
-    race_description TEXT,
- PRIMARY KEY (race)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
-;
-
-CREATE TABLE hispanic_ethnicity (
-    hispanic_ethnicity char(2) NOT NULL,
-    hispanic_ethnicity_name varchar(255) NOT NULL,
-    hispanic_ethnicity_description TEXT,
- PRIMARY KEY (hispanic_ethnicity)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
-;
-
 -- When the partner populates the initial patient data
 -- the `linkage_uuid`, and `linkage_added_at` columns are null
 -- TODO: check if `pat_mrn` column should be unique key
@@ -44,8 +28,6 @@ CREATE TABLE patient (
     linkage_uuid binary(16),
     linkage_added_at datetime,
     gender char(2),
-    race char(2),
-    hispanic_ethnicity char(2),
     pat_birth_date date             NOT NULL,
     pat_first_name varchar(255)     NOT NULL,
     pat_last_name varchar(255)      NOT NULL,
@@ -62,10 +44,6 @@ CREATE TABLE patient (
  KEY (linkage_uuid),
  KEY (linkage_added_at),
  KEY (gender),
- KEY (race),
- KEY (hispanic_ethnicity),
- CONSTRAINT `fk_patient_gender` FOREIGN KEY (gender) REFERENCES gender (gender),
- CONSTRAINT `fk_patient_race` FOREIGN KEY (race) REFERENCES race (race),
- CONSTRAINT `fk_patient_hispanic_ethnicity` FOREIGN KEY (hispanic_ethnicity) REFERENCES hispanic_ethnicity (hispanic_ethnicity)
+ CONSTRAINT `fk_patient_gender` FOREIGN KEY (gender) REFERENCES gender (gender)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ;
