@@ -49,6 +49,9 @@ class TestConfig(unittest.TestCase):
         app.config.from_dictionary({'DB_HOST': None})
         self.assertRaisesRegexp(ConfigErr, "DB_HOST", app.validate_config)
 
+        app.config.from_dictionary({'DB_TYPE': None})
+        self.assertRaisesRegexp(ConfigErr, "DB_TYPE", app.validate_config)
+
         app.config.from_dictionary({"SAVE_URL": None})
         self.assertRaisesRegexp(ConfigErr, "SAVE_URL", app.validate_config)
 

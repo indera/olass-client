@@ -24,6 +24,9 @@ log = logging.getLogger(__package__)
 FORMAT_DATABASE_DATE = "%Y-%m-%d"
 # FORMAT_DATABASE_DATE_TIME = "%Y-%m-%d %H:%M:%S"
 
+DB_TYPE_MYSQL = 'MYSQL'
+DB_TYPE_MSSQL = 'MSSQL'
+
 
 # table of punctuation characters + space
 CHARS_TO_DELETE = dict.fromkeys(
@@ -51,19 +54,21 @@ def get_uuid_bin(uuid_text=None):
     lower = str(uuid_text).replace('-', '').lower()
     return unhexlify(lower.encode())
 
-    # def get_db_url_sqlserver(db_host, db_port, db_name, db_user, db_pass):
-    #     """
-    #     Helper function for creating the "pyodbc" connection string.
-    #
-    #     @see http://docs.sqlalchemy.org/en/latest/dialects/mssql.html
-    #     @see https://code.google.com/p/pyodbc/wiki/ConnectionStrings
-    #     """
-    #     from urllib import parse
-    #     params = parse.quote(
-    #         "Driver={{FreeTDS}};Server={};Port={};"
-    #         "Database={};UID={};PWD={};"
-    #         .format(db_host, db_port, db_name, db_user, db_pass))
-    #     return 'mssql+pyodbc:///?odbc_connect={}'.format(params)
+
+def get_db_url_sqlserver(config):
+    """
+    Helper function for creating the "pyodbc" connection string.
+
+    @see http://docs.sqlalchemy.org/en/latest/dialects/mssql.html
+    @see https://code.google.com/p/pyodbc/wiki/ConnectionStrings
+    """
+    from urllib import parse
+    params = parse.quote(
+        "Driver={{FreeTDS}};Server={};Port={};"
+        "Database={};UID={};PWD={};"
+        .format(config['DB_HOST'], config['DB_PORT'], config['DB_NAME'],
+                config['DB_USER,'], config['DB_PASS']))
+    return 'mssql+pyodbc:///?odbc_connect={}'.format(params)
 
 
 def get_db_url_mysql(config):
@@ -74,19 +79,30 @@ def get_db_url_mysql(config):
         return config['DB_URL_TESTING']
 
     return 'mysql+mysqlconnector://{}:{}@{}/{}' \
-        .format(config['DB_USER'],
-                config['DB_PASS'],
-                config['DB_HOST'],
-                config['DB_NAME'])
+           .format(config['DB_USER'],
+                   config['DB_PASS'],
+                   config['DB_HOST'],
+                   config['DB_NAME'])
+
+
+def get_db_url(config):
+    db_type = config.get('DB_TYPE').upper()
+
+    if DB_TYPE_MYSQL == db_type:
+        url = get_db_url_mysql(config)
+    elif DB_TYPE_MSSQL == db_type:
+        url = get_db_url_sqlserver(config)
+    else:
+        raise Exception("Incorrect DB_TYPE: {}".format(db_type))
+
+    return url
 
 
 def get_db_engine(config):
     """
     @see http://docs.sqlalchemy.org/en/latest/core/connections.html
     """
-    # TODO: add support for connecting to sqlserver
-    db_name = config.get('DB_NAME')
-    url = get_db_url_mysql(config)
+    url = get_db_url(config)
 
     try:
         engine = db.create_engine(url,

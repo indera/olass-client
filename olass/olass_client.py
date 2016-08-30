@@ -116,6 +116,9 @@ class OlassClient():
         if not self.config.get('SAVE_URL'):
             raise ConfigErr("Please add config param 'SAVE_URL'")
 
+        if not self.config.get('DB_TYPE'):
+            raise ConfigErr("Please add config param 'DB_TYPE'")
+
         if not self.config.get('DB_HOST'):
             raise ConfigErr("Please add config param 'DB_HOST'")
 

@@ -2,6 +2,7 @@
 invoke
 mock
 mysql-connector
+pyodbc
 pytest-cov
 pylint
 requests

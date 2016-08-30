@@ -17,6 +17,7 @@ CLIENT_SECRET = 'secret_1'
 TOKEN_URL = 'https://localhost:5000/oauth/token'
 SAVE_URL = 'https://localhost:5000/api/save'
 
+DB_TYPE = 'mysql'  # or 'mssql'
 DB_HOST = 'localhost'
 DB_PORT = 3306
 DB_NAME = 'olassc'

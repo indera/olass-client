@@ -8,6 +8,7 @@ CLIENT_SECRET = 'secret_1'
 TOKEN_URL = 'https://localhost'
 SAVE_URL = 'https://localhost'
 
+DB_TYPE = 'mysql'
 DB_HOST = 'localhost'
 DB_PORT = 123
 DB_NAME = ''
